@@ -1,0 +1,47 @@
+# Cursor Rules & Project Context
+
+## Project Philosophy
+You are working on **SR Designer Studio**, a premium interior design portfolio.
+- **Aesthetic:** Apple-like minimal luxury, "Studio RHE" editorial style.
+- **Core Interaction:** **Global Horizontal Scroll**. The site scrolls SIDEWAYS when the user scrolls DOWN.
+
+## Tech Stack
+- **Framework:** Next.js 15 (App Router)
+- **Styling:** Tailwind CSS v4
+- **Animation:** GSAP (ScrollTrigger) + Framer Motion
+- **Fonts:** Fraunces (Serif) + Plus Jakarta Sans (Sans)
+
+## Coding Standards
+
+### 1. Styling & Design
+- **Typography:** 
+  - ALWAYS use `font-serif` (Fraunces) for **Headings** and **Titles**.
+  - Use `font-sans` (Plus Jakarta Sans) for body text and UI elements.
+- **Colors:** Use brand variables: `bg-sr-black`, `text-sr-red`, `bg-sr-beige`, `text-sr-orange`.
+- **Layouts:** 
+  - Top-level sections MUST be `h-screen` and `shrink-0` to work with the horizontal scroll engine.
+  - Use `w-screen` for full-width panels or fixed `w-[40vw]` for split panels.
+
+### 2. Component Structure
+- Components should be functional and self-contained.
+- Use `framer-motion` for entrance animations (`initial={{ opacity: 0, y: 20 }}`).
+- Use `lucide-react` for icons.
+
+### 3. Global Horizontal Scroll & GSAP Integration (CRITICAL)
+- The scroll logic resides in `app/page.js`.
+- It translates the entire `.flex` container horizontally.
+- **GSAP + React Rule:** 
+  - **NEVER** pin (`pin: true`) the root element of a React component (e.g., `<main>`). This causes "Node to be removed is not a child" errors on unmount.
+  - **ALWAYS** wrap the content to be pinned in an internal `<div>` and attach the ref to that internal wrapper.
+  - **ALWAYS** use `gsap.context()` for creating animations and call `ctx.revert()` in the `useEffect` cleanup.
+- **Scroll Behavior:** Do NOT use `scroll-smooth` in global CSS or layout; let GSAP handle the smoothing.
+
+### 4. Best Practices
+- Use `cn()` from `@/lib/utils` for class merging.
+- Keep `page.js` clean; import sections as components.
+- Ensure all images have `alt` tags and are high-quality.
+
+## Context Memory
+- We recently switched fonts to match "Suisse Int'l" (Plus Jakarta) and "Reckless" (Fraunces).
+- The Hero section replicates the "Building Beyond" screenshot layout.
+- **Fixed:** Runtime NotFoundError by ensuring proper GSAP pinning structure (internal wrapper vs root element).

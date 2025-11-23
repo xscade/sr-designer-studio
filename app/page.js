@@ -1,65 +1,116 @@
-import Image from "next/image";
+"use client";
+
+import { useEffect, useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import Hero from "@/components/Hero";
+import FounderShowcase from "@/components/FounderShowcase";
+import ServicesGrid from "@/components/ServicesGrid";
+import Portfolio from "@/components/Portfolio";
+import ProcessTimeline from "@/components/ProcessTimeline";
+import AIGenerator from "@/components/AIGenerator";
+import VideoShowcase from "@/components/VideoShowcase";
+import LeadForm from "@/components/LeadForm";
+import Footer from "@/components/Footer";
+
+gsap.registerPlugin(ScrollTrigger);
 
 export default function Home() {
+  const containerRef = useRef(null);
+  const wrapperRef = useRef(null);
+
+  useEffect(() => {
+    let ctx = gsap.context(() => {
+      const container = containerRef.current;
+      const wrapper = wrapperRef.current;
+      
+      if (!container || !wrapper) return;
+
+      // Get total width of the scrolling content
+      const getScrollAmount = () => {
+          let scrollWidth = wrapper.scrollWidth;
+          return -(scrollWidth - window.innerWidth);
+      };
+
+      gsap.to(wrapper, {
+        x: getScrollAmount,
+        ease: "none",
+        scrollTrigger: {
+          trigger: container,
+          pin: true,
+          scrub: 1,
+          end: () => `+=${wrapper.scrollWidth}`, // Scroll distance matches width
+          invalidateOnRefresh: true,
+        }
+      });
+    }, containerRef); // Scope to container
+
+    return () => ctx.revert(); // Cleanup all GSAP animations/triggers
+  }, []);
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.js file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <main className="overscroll-none bg-white selection:bg-sr-orange selection:text-white overflow-hidden">
+      <div ref={containerRef} className="w-full h-full">
+        <div ref={wrapperRef} className="flex h-screen w-fit">
+        
+        {/* Section 1: Hero */}
+        <section className="w-screen h-screen shrink-0 relative">
+          <Hero />
+        </section>
+
+        {/* Section 2: Founder */}
+        <section className="w-screen h-screen shrink-0 bg-sr-beige flex items-center justify-center overflow-hidden">
+           <div className="h-full w-full overflow-y-auto md:overflow-hidden">
+             <FounderShowcase />
+           </div>
+        </section>
+
+        {/* Section 3: Services */}
+        <section className="w-screen h-screen shrink-0 bg-white flex items-center justify-center overflow-hidden">
+             <div className="h-full w-full overflow-y-auto md:overflow-hidden flex items-center">
+                <ServicesGrid />
+             </div>
+        </section>
+
+        {/* Section 4: Portfolio (Already Horizontal) */}
+        <div className="h-screen shrink-0">
+          <Portfolio />
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+
+        {/* Section 5: Process Timeline (Already Horizontal) */}
+        <div className="h-screen shrink-0">
+          <ProcessTimeline />
         </div>
-      </main>
-    </div>
+
+        {/* Section 6: Video */}
+        <section className="w-screen h-screen shrink-0 bg-sr-black flex items-center justify-center">
+            <div className="w-full h-full flex items-center justify-center">
+                <VideoShowcase />
+            </div>
+        </section>
+
+        {/* Section 7: AI Generator */}
+         <section className="w-screen h-screen shrink-0 bg-sr-beige/30 flex items-center justify-center">
+            <div className="h-full w-full overflow-y-auto md:overflow-hidden flex items-center">
+                <AIGenerator />
+            </div>
+        </section>
+
+        {/* Section 8: Lead Form */}
+        <section className="w-screen h-screen shrink-0 bg-white flex items-center justify-center">
+             <div className="h-full w-full overflow-y-auto md:overflow-hidden flex items-center">
+                <LeadForm />
+             </div>
+        </section>
+
+        {/* Section 9: Footer */}
+        <section className="w-screen h-screen shrink-0 bg-sr-black flex items-center justify-center">
+             <div className="h-full w-full overflow-y-auto md:overflow-hidden flex items-center">
+                <Footer />
+             </div>
+        </section>
+      </div>
+      </div>
+    </main>
   );
 }
