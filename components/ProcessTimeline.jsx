@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { ClipboardList, Map, PenTool, ShoppingBag, Hammer, Key, ArrowRight } from "lucide-react";
 
@@ -8,37 +8,37 @@ const steps = [
   {
     id: "01",
     title: "Understanding",
-    description: "We begin by listening. Understanding your lifestyle, needs, and aspirations is the foundation.",
+    description: "We begin by listening deeply to your vision. Understanding your lifestyle, needs, and personal aspirations is the essential foundation of our design process.",
     icon: ClipboardList,
   },
   {
     id: "02",
     title: "Planning",
-    description: "Strategic space planning to optimize flow, functionality, and light.",
+    description: "We develop strategic space planning layouts that meticulously optimize flow, functionality, and natural light to enhance your daily living experience.",
     icon: Map,
   },
   {
     id: "03",
     title: "Designing",
-    description: "Creating detailed 3D visualizations and material boards for your approval.",
+    description: "We create immersive, detailed 3D visualizations and curate exclusive material boards, giving you a complete preview of your future space before we build.",
     icon: PenTool,
   },
   {
     id: "04",
     title: "Procurement",
-    description: "Sourcing premium materials and furniture from trusted global vendors.",
+    description: "We manage the entire sourcing process, selecting premium materials and bespoke furniture from a network of trusted global vendors and artisans.",
     icon: ShoppingBag,
   },
   {
     id: "05",
     title: "Assembly",
-    description: "Precision execution by our skilled craftsmen under strict supervision.",
+    description: "Our skilled craftsmen execute every detail with precision, working under strict supervision to ensure the highest standards of quality and finish.",
     icon: Hammer,
   },
   {
     id: "06",
     title: "Delivery",
-    description: "The final reveal. We hand over your key to a fully realized dream home.",
+    description: "The final reveal marks the beginning of your new chapter. We hand over the keys to a fully realized, styled, and pristine dream home experience.",
     icon: Key,
   },
 ];
@@ -63,14 +63,15 @@ function TimelineStep({ step, index, isLast }) {
         
         {/* Icon Container */}
         <motion.div 
-          className="w-16 h-16 rounded-full bg-sr-black text-white flex items-center justify-center mb-6 relative z-20 shadow-lg"
+          className="w-16 h-16 rounded-full bg-sr-black text-white flex items-center justify-center mb-6 relative z-20 shadow-lg icon-target"
+          data-step-index={index}
           whileInView={{ 
             backgroundColor: "#E87F02", // sr-orange
             scale: [1, 1.2, 1],
           }}
           transition={{ 
             duration: 0.5, 
-            delay: 0.2, // Slight delay to sync with the incoming line visually
+            delay: 0.2,
             ease: "easeInOut"
           }}
           viewport={{ once: true, margin: "-50px" }}
@@ -78,31 +79,9 @@ function TimelineStep({ step, index, isLast }) {
           <step.icon className="w-6 h-6" />
         </motion.div>
 
-        {/* Connecting Line (Arc) */}
+        {/* Connecting Line Logic - Now handled dynamically */}
         {!isLast && (
-          <div className="absolute top-8 left-8 w-[calc(100%)] h-32 pointer-events-none z-10 hidden md:block">
-             <svg width="100%" height="100%" viewBox="0 0 300 100" fill="none" preserveAspectRatio="none" className="overflow-visible">
-                {/* Base grey path */}
-                <path 
-                  d="M 32,32 Q 150,-50 332,32" 
-                  stroke="#E5E7EB" 
-                  strokeWidth="2" 
-                  strokeDasharray="4 4"
-                  fill="none"
-                />
-                {/* Animated orange path */}
-                <motion.path 
-                  d="M 32,32 Q 150,-50 332,32" 
-                  stroke="#E87F02" 
-                  strokeWidth="2"
-                  fill="none"
-                  initial={{ pathLength: 0 }}
-                  whileInView={{ pathLength: 1 }}
-                  transition={{ duration: 1.5, ease: "easeInOut", delay: 0.5 }}
-                  viewport={{ once: true }}
-                />
-             </svg>
-          </div>
+           <ConnectorLine />
         )}
       </div>
       
@@ -121,6 +100,20 @@ function TimelineStep({ step, index, isLast }) {
       </motion.div>
     </div>
   );
+}
+
+function ConnectorLine() {
+    return (
+        <div className="absolute top-8 left-[32px] w-[80vw] md:w-[30vw] h-[2px] bg-gray-200 pointer-events-none z-0 hidden md:block">
+             <motion.div 
+               className="h-full bg-sr-orange origin-left"
+               initial={{ scaleX: 0 }}
+               whileInView={{ scaleX: 1 }}
+               transition={{ duration: 1.0, ease: "circOut", delay: 0.3 }}
+               viewport={{ once: true }}
+             />
+        </div>
+    );
 }
 
 export default function ProcessTimeline() {
