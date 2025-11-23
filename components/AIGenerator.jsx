@@ -14,13 +14,13 @@ const CONTEXT_TAGS = [
 const SLIDER_IMAGES = [
   "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?q=90&w=800&auto=format&fit=crop",
   "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=90&w=800&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?q=90&w=800&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?q=90&w=800&auto=format&fit=crop",
   "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=90&w=800&auto=format&fit=crop",
   "https://images.unsplash.com/photo-1600573472592-401b489a3cdc?q=90&w=800&auto=format&fit=crop",
   "https://images.unsplash.com/photo-1600585154526-990dced4db0d?q=90&w=800&auto=format&fit=crop",
   "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?q=90&w=800&auto=format&fit=crop",
   "https://images.unsplash.com/photo-1600607687644-c7171b42498f?q=90&w=800&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1600210491892-03d54cc0d578?q=90&w=800&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1618219908412-a29a1bb7b86e?q=90&w=800&auto=format&fit=crop",
   "https://images.unsplash.com/photo-1600607688969-a5bfcd646154?q=90&w=800&auto=format&fit=crop"
 ];
 
@@ -141,11 +141,11 @@ export default function AIGenerator() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
             >
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sr-orange/10 text-sr-orange text-xs font-bold uppercase tracking-wider mb-6">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sr-orange/10 text-sr-orange text-xs font-bold uppercase tracking-wider mb-6 mt-16 md:mt-0">
                 <Sparkles className="w-3 h-3" />
                 AI Powered
               </div>
-              <h2 className="text-4xl md:text-6xl font-bold text-sr-black mb-4 font-serif">Visualize Your Dream Room with AI</h2>
+              <h2 className="text-4xl md:text-6xl font-bold text-sr-black mb-4 font-serif">Visualize Your Dream Room with SR AI</h2>
               <p className="text-gray-600 mb-8 text-lg">
                 Describe your ideal space or upload a photo to reimagine it.
               </p>
@@ -334,7 +334,7 @@ export default function AIGenerator() {
                                 {/* Duplicated list for seamless loop */}
                                 {[...SLIDER_IMAGES, ...SLIDER_IMAGES].map((src, idx) => (
                                     <div key={idx} className="w-24 h-24 rounded-lg overflow-hidden shadow-sm border border-white/50 shrink-0">
-                                        <img src={src} alt="Inspiration" className="w-full h-full object-cover opacity-90 hover:opacity-100 transition-opacity" />
+                                        <img src={src} alt={`Inspiration ${idx + 1}`} className="w-full h-full object-cover opacity-90 hover:opacity-100 transition-opacity" />
                                     </div>
                                 ))}
                             </motion.div>

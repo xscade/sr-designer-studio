@@ -7,6 +7,7 @@ import Hero from "@/components/Hero";
 import FounderShowcase from "@/components/FounderShowcase";
 import ServicesGrid from "@/components/ServicesGrid";
 import Portfolio from "@/components/Portfolio";
+import BeforeAfterGallery from "@/components/BeforeAfterGallery";
 import ProcessTimeline from "@/components/ProcessTimeline";
 import AIGenerator from "@/components/AIGenerator";
 import VideoShowcase from "@/components/VideoShowcase";
@@ -32,15 +33,90 @@ export default function Home() {
           return -(scrollWidth - window.innerWidth);
       };
 
-      gsap.to(wrapper, {
+      const mainTween = gsap.to(wrapper, {
         x: getScrollAmount,
         ease: "none",
         scrollTrigger: {
           trigger: container,
           pin: true,
           scrub: 1,
+          snap: {
+            snapTo: (progress) => {
+              const totalScroll = wrapper.scrollWidth - window.innerWidth;
+              const snapPoints = [];
+              let withinProcessSection = false;
+              
+              // Calculate snap points dynamically based on section positions
+              Array.from(wrapper.children).forEach((child) => {
+                const start = child.offsetLeft;
+                const width = child.offsetWidth;
+                const end = start + width;
+                
+                const startProgress = start / totalScroll;
+                const endProgress = end / totalScroll;
+
+                // Add the start of the section
+                snapPoints.push(startProgress);
+
+                // Special handling for Process Section: Enable continuous scroll (no intermediate snaps)
+                // We check if the current progress is within this section's range
+                if (child.id === "process-section") {
+                    if (progress > startProgress && progress < endProgress) {
+                        withinProcessSection = true;
+                    }
+                } 
+                // For other wide sections (like Portfolio), keep the 100vw snapping
+                else if (width > window.innerWidth) {
+                  let offset = window.innerWidth;
+                  while (offset < width) {
+                    const point = (start + offset) / totalScroll;
+                    if (point <= 1) snapPoints.push(point);
+                    offset += window.innerWidth;
+                  }
+                }
+              });
+              
+              // Ensure the very end is a snap point
+              snapPoints.push(1);
+
+              // If we are inside the Process section, return the current progress (disable snapping)
+              // This allows the user to scroll continuously/freely within this specific section
+              if (withinProcessSection) {
+                  return progress;
+              }
+
+              // Find the closest snap point for other sections
+              const closest = snapPoints.reduce((prev, curr) => {
+                return Math.abs(curr - progress) < Math.abs(prev - progress) ? curr : prev;
+              });
+
+              return closest;
+            },
+            duration: { min: 0.2, max: 0.6 },
+            ease: "power1.inOut",
+          },
           end: () => `+=${wrapper.scrollWidth}`, // Scroll distance matches width
           invalidateOnRefresh: true,
+        }
+      });
+
+      // Enhanced UX: Pin the Portfolio Intro Panel while scrolling through projects
+      // This creates a "sticky" effect for the intro text while cards scroll by
+      gsap.to("#portfolio-panel", {
+        x: () => {
+            const section = document.querySelector("#portfolio-section");
+            if (!section) return 0;
+            // Move panel to the right as the container moves left, keeping it visually pinned
+            // Distance = Width of section - Width of screen (the amount of overflow)
+            return section.offsetWidth - window.innerWidth;
+        },
+        ease: "none",
+        scrollTrigger: {
+            trigger: "#portfolio-section",
+            containerAnimation: mainTween,
+            start: "left left",
+            end: "right right",
+            scrub: true,
         }
       });
     }, containerRef); // Scope to container
@@ -77,12 +153,17 @@ export default function Home() {
           <Portfolio />
         </div>
 
-        {/* Section 5: Process Timeline (Already Horizontal) */}
+        {/* Section 5: Before & After Gallery */}
         <div className="h-screen shrink-0">
+          <BeforeAfterGallery />
+        </div>
+
+        {/* Section 6: Process Timeline (Already Horizontal) */}
+        <div id="process-section" className="h-screen shrink-0">
           <ProcessTimeline />
         </div>
 
-        {/* Section 6: Video */}
+        {/* Section 7: Video */}
         <section className="w-screen h-screen shrink-0 bg-sr-black flex items-center justify-center">
             <div className="w-full h-full flex items-center justify-center">
                 <VideoShowcase />
