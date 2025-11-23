@@ -171,7 +171,7 @@ export default function Home() {
         </section>
 
         {/* Section 7: AI Generator */}
-         <section className="w-screen h-screen shrink-0 bg-sr-beige/30 flex items-center justify-center">
+         <section id="ai-generator-section" className="w-screen h-screen shrink-0 bg-sr-beige/30 flex items-center justify-center">
             <div className="h-full w-full overflow-y-auto md:overflow-hidden flex items-center">
                 <AIGenerator />
             </div>

@@ -18,6 +18,46 @@ const navItems = [
 export default function Navigation() {
   const pathname = usePathname();
   const [isExpanded, setIsExpanded] = useState(true);
+  const [isCollapsedByScroll, setIsCollapsedByScroll] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      // Check if we are in the AI Generator section
+      // You can refine this logic by using Intersection Observer if needed,
+      // but checking scroll position relative to viewport height is simpler for this specific layout.
+      
+      // Assuming standard h-screen sections. 
+      // The AI Generator is roughly the 7th-8th section based on the page layout.
+      // However, horizontal scroll layouts are tricky with window.scrollY.
+      // But since the main scroll is vertical (GSAP translates it to horizontal), 
+      // window.scrollY increases normally.
+      
+      // We need to find the scroll trigger point for the AI Generator section.
+      // A safer way is to check if the element is in view.
+      const aiSection = document.querySelector('#ai-generator-section');
+      
+      if (aiSection) {
+        const rect = aiSection.getBoundingClientRect();
+        // Check if the section is significantly in the viewport (e.g., taking up >50%)
+        const isVisible = rect.left < window.innerWidth * 0.5 && rect.right > window.innerWidth * 0.5;
+        
+        if (isVisible && !isCollapsedByScroll) {
+            setIsExpanded(false);
+            setIsCollapsedByScroll(true);
+        } else if (!isVisible && isCollapsedByScroll) {
+            setIsExpanded(true);
+            setIsCollapsedByScroll(false);
+        }
+      }
+    };
+
+    // Add scroll listener to the window or the container if it's a custom scroller
+    // Since GSAP scrollTrigger uses native scroll, window scroll event should work.
+    window.addEventListener('scroll', handleScroll);
+    // Also listen to resize/GSAP updates if possible, but scroll is main driver
+    
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [isCollapsedByScroll]);
 
   return (
     <>
