@@ -15,9 +15,9 @@ export default function LeadForm() {
   };
 
   return (
-    <div className="w-full max-w-[100vw] px-6 md:px-12">
-        <div className="max-w-3xl mx-auto">
-          <div className="text-center mb-12">
+    <div className="w-full max-w-[100vw] px-6 md:px-12 flex items-center justify-start h-full">
+        <div className="max-w-3xl w-full md:ml-12 lg:ml-24">
+          <div className="text-left mb-8">
             <h2 className="text-4xl md:text-6xl font-bold text-sr-black mb-4 font-serif">Start Your Journey</h2>
             <p className="text-gray-500 text-lg">
               Ready to transform your space? Tell us a bit about your project.
