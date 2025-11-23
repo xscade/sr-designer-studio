@@ -134,8 +134,8 @@ export default function AIGenerator() {
     <div className="w-screen h-screen flex overflow-hidden">
       
       {/* Input Side - 60% Width */}
-      <div className="w-full lg:w-[60vw] h-full flex items-center justify-center bg-sr-beige/30 p-8 md:p-16 relative z-10 overflow-y-auto">
-        <div className="max-w-3xl w-full py-12">
+      <div className="w-full lg:w-[60vw] h-full flex items-center justify-center bg-sr-beige/30 p-8 relative z-10 overflow-hidden">
+        <div className="max-w-3xl w-full">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
