@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "./ui/Button";
-import { Sparkles, Loader2, Check, Upload, Image as ImageIcon, X, Lightbulb, Maximize2, Download, Paperclip } from "lucide-react";
+import { Sparkles, Loader2, Check, Upload, Image as ImageIcon, X, Lightbulb, Maximize2, Download, Paperclip, RefreshCw } from "lucide-react";
 import { Label } from "@radix-ui/react-label";
 import { cn } from "@/lib/utils";
 
@@ -24,6 +24,17 @@ const SLIDER_IMAGES = [
   "https://images.unsplash.com/photo-1600607688969-a5bfcd646154?q=90&w=800&auto=format&fit=crop"
 ];
 
+const DESIGN_QUOTES = [
+  "Design is not just what it looks like and feels like. Design is how it works.",
+  "Simplicity is the ultimate sophistication.",
+  "Architecture starts when you carefully put two bricks together. There it begins.",
+  "The details are not the details. They make the design.",
+  "Recognizing the need is the primary condition for design.",
+  "Form follows function.",
+  "Less is more.",
+  "Every great design begins with an even better story."
+];
+
 export default function AIGenerator() {
   const [prompt, setPrompt] = useState("");
   const [selectedImage, setSelectedImage] = useState(null);
@@ -34,22 +45,33 @@ export default function AIGenerator() {
   const [ideas, setIdeas] = useState([]);
   const [isLoadingIdeas, setIsLoadingIdeas] = useState(true);
   const [activeImage, setActiveImage] = useState(null);
+  const [progress, setProgress] = useState(0); // 0, 1, 2, 3
+  const [currentQuote, setCurrentQuote] = useState("");
   const fileInputRef = useRef(null);
 
-  useEffect(() => {
-    const fetchIdeas = async () => {
-      try {
-        const res = await fetch("/api/generate-ideas");
-        const data = await res.json();
-        if (data.ideas) {
-          setIdeas(data.ideas);
-        }
-      } catch (e) {
-        console.error("Failed to fetch ideas", e);
-      } finally {
-        setIsLoadingIdeas(false);
+  const fetchIdeas = async () => {
+    setIsLoadingIdeas(true);
+    try {
+      const res = await fetch("/api/generate-ideas");
+      const data = await res.json();
+      if (data.ideas) {
+        setIdeas(data.ideas);
       }
-    };
+    } catch (e) {
+      console.error("Failed to fetch ideas", e);
+      // Fallback ideas if API fails
+      setIdeas([
+        "Bohemian bedroom with hanging plants and macrame.",
+        "Industrial loft with exposed brick and modern art.",
+        "Minimalist living room bathed in natural light, serene.",
+        "Luxury bathroom: marble, gold accents, freestanding tub."
+      ]);
+    } finally {
+      setIsLoadingIdeas(false);
+    }
+  };
+
+  useEffect(() => {
     fetchIdeas();
   }, []);
 
@@ -91,6 +113,23 @@ export default function AIGenerator() {
     setIsGenerating(true);
     setResults([]);
     setError(null);
+    setProgress(0);
+    
+    // Random initial quote
+    setCurrentQuote(DESIGN_QUOTES[Math.floor(Math.random() * DESIGN_QUOTES.length)]);
+
+    // Quote rotation interval
+    const quoteInterval = setInterval(() => {
+        setCurrentQuote(DESIGN_QUOTES[Math.floor(Math.random() * DESIGN_QUOTES.length)]);
+    }, 3000);
+    
+    // Simulated progress steps (purely visual feedback while waiting)
+    const progressInterval = setInterval(() => {
+        setProgress(prev => {
+            if (prev < 2) return prev + 1;
+            return prev;
+        });
+    }, 4000); // Updates roughly every 4 seconds
     
     // Construct enriched prompt
     let finalPrompt = prompt;
@@ -116,8 +155,10 @@ export default function AIGenerator() {
       }
 
       if (data.results && Array.isArray(data.results)) {
+        setProgress(3); // Complete
         setResults(data.results);
       } else if (data.result) {
+        setProgress(3); // Complete
         setResults([data.result]);
       } else {
         throw new Error("No result received from AI");
@@ -126,6 +167,8 @@ export default function AIGenerator() {
       console.error("Generation failed:", error);
       setError(error.message);
     } finally {
+      clearInterval(quoteInterval);
+      clearInterval(progressInterval);
       setIsGenerating(false);
     }
   };
@@ -301,23 +344,38 @@ export default function AIGenerator() {
                               <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce delay-300"></div>
                            </div>
                         ) : (
-                           <div className="flex flex-wrap justify-center gap-3 mb-12">
-                              {ideas.map((idea, index) => (
-                                <motion.button
-                                  key={index}
-                                  initial={{ opacity: 0, scale: 0.9 }}
-                                  animate={{ opacity: 1, scale: 1 }}
-                                  transition={{ delay: index * 0.1 }}
-                                  onClick={() => setPrompt(idea)}
-                                  className="px-4 py-3 rounded-2xl bg-white/80 hover:bg-sr-orange hover:text-white text-gray-700 text-sm font-medium transition-all text-left border border-white/50 hover:border-sr-orange shadow-sm hover:shadow-lg active:scale-95 backdrop-blur-sm"
-                                >
-                                  <div className="flex items-center gap-2">
-                                    <Lightbulb className="w-3 h-3 opacity-70" />
-                                    {idea}
-                                  </div>
-                                </motion.button>
-                              ))}
-                           </div>
+                           <>
+                               <div className="flex flex-wrap justify-center gap-3 mb-6">
+                                  {ideas.map((idea, index) => (
+                                    <motion.button
+                                      key={index}
+                                      initial={{ opacity: 0, scale: 0.9 }}
+                                      animate={{ opacity: 1, scale: 1 }}
+                                      transition={{ delay: index * 0.1 }}
+                                      onClick={() => setPrompt(idea)}
+                                      className="px-4 py-3 rounded-2xl bg-white/80 hover:bg-sr-orange hover:text-white text-gray-700 text-sm font-medium transition-all text-left border border-white/50 hover:border-sr-orange shadow-sm hover:shadow-lg active:scale-95 backdrop-blur-sm"
+                                    >
+                                      <div className="flex items-center gap-2">
+                                        <Lightbulb className="w-3 h-3 opacity-70" />
+                                        {idea}
+                                      </div>
+                                    </motion.button>
+                                  ))}
+                               </div>
+                               
+                               {/* Refresh Bubble Button */}
+                               <div className="flex justify-center mb-4 relative z-20">
+                                  <Button 
+                                    size="icon" 
+                                    variant="ghost"
+                                    onClick={fetchIdeas}
+                                    className="rounded-full w-10 h-10 bg-white shadow-md text-gray-500 hover:text-sr-orange hover:rotate-180 transition-all duration-500"
+                                    title="Refresh Ideas"
+                                  >
+                                    <RefreshCw className="w-5 h-5" />
+                                  </Button>
+                               </div>
+                           </>
                         )}
 
                         {/* Infinite Slider */}
@@ -365,11 +423,52 @@ export default function AIGenerator() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="absolute inset-0 flex flex-col items-center justify-center bg-white/80 backdrop-blur-sm z-20"
+                className="absolute inset-0 flex flex-col items-center justify-center bg-white/90 backdrop-blur-md z-20 px-8 text-center"
                >
+                  {/* Progress Indicator */}
+                  <div className="flex items-center gap-2 mb-8">
+                    {[1, 2, 3].map((step) => (
+                        <div key={step} className="flex items-center">
+                            <motion.div 
+                                initial={{ scale: 0.8, opacity: 0.5 }}
+                                animate={{ 
+                                    scale: progress >= step ? 1.1 : 0.8, 
+                                    opacity: progress >= step ? 1 : 0.5,
+                                    backgroundColor: progress >= step ? "#E87F02" : "#E5E7EB"
+                                }}
+                                className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold text-white transition-all duration-500"
+                            >
+                                {step}
+                            </motion.div>
+                            {step < 3 && (
+                                <div className="w-8 h-0.5 bg-gray-200 mx-1">
+                                    <motion.div 
+                                        className="h-full bg-sr-orange" 
+                                        initial={{ width: "0%" }}
+                                        animate={{ width: progress > step ? "100%" : "0%" }}
+                                        transition={{ duration: 0.5 }}
+                                    />
+                                </div>
+                            )}
+                        </div>
+                    ))}
+                  </div>
+
                   <div className="w-20 h-20 border-4 border-sr-orange border-t-transparent rounded-full animate-spin mb-6" />
-                  <p className="text-sr-black font-medium text-lg">Dreaming up your space...</p>
-                  <p className="text-gray-500 text-sm mt-2">Generating 3 variations...</p>
+                  
+                  <AnimatePresence mode="wait">
+                      <motion.p 
+                        key={currentQuote}
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -10 }}
+                        className="text-sr-black font-serif italic text-xl max-w-md"
+                      >
+                        "{currentQuote}"
+                      </motion.p>
+                  </AnimatePresence>
+                  
+                  <p className="text-gray-400 text-sm mt-4 uppercase tracking-widest">Generating Concepts...</p>
                </motion.div>
             )}
 

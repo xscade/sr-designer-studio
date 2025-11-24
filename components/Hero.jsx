@@ -24,6 +24,29 @@ export default function Hero() {
     return () => clearInterval(interval);
   }, []);
 
+  const handleExploreClick = () => {
+    // Logic to scroll to the AI Generator section on the homepage
+    const wrapper = document.querySelector("#horizontal-wrapper");
+    const section = document.querySelector("#ai-generator-section");
+
+    if (wrapper && section) {
+        const scrollWidth = wrapper.scrollWidth;
+        const windowWidth = window.innerWidth;
+        const offsetLeft = section.offsetLeft;
+        
+        const maxScroll = scrollWidth - windowWidth;
+        if (maxScroll > 0) {
+            const progress = offsetLeft / maxScroll;
+            const scrollPos = progress * scrollWidth;
+            
+            window.scrollTo({
+                top: scrollPos,
+                behavior: "smooth"
+            });
+        }
+    }
+  };
+
   return (
     <section className="relative h-screen w-screen overflow-hidden bg-sr-black text-white">
       {/* Background Image Carousel */}
@@ -75,7 +98,10 @@ export default function Hero() {
           
           {/* Optional sub-line or CTA next to the big title if needed */}
           <div className="md:absolute md:bottom-12 md:right-12 mt-8 md:mt-0 pointer-events-auto">
-             <Button variant="white" className="rounded-none px-8 py-6 text-lg tracking-wide hover:bg-white hover:text-sr-black transition-colors">
+             <Button 
+                onClick={handleExploreClick}
+                className="rounded-full px-8 py-6 text-lg tracking-wide bg-sr-orange text-white hover:bg-white hover:text-sr-black transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 border-none"
+             >
                 Explore AI <ArrowRight className="ml-2 w-5 h-5" />
              </Button>
           </div>
