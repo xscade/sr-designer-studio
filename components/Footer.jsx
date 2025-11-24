@@ -1,5 +1,6 @@
 import { Button } from "./ui/Button";
 import { Instagram, Facebook, Linkedin, Twitter, Heart } from "lucide-react";
+import Link from "next/link";
 
 export default function Footer() {
   return (
@@ -10,9 +11,11 @@ export default function Footer() {
           <h2 className="text-5xl md:text-7xl font-bold mb-8 tracking-tight font-serif">
             Ready to transform <br /> your space?
           </h2>
-          <Button variant="primary" size="lg" className="h-16 px-10 text-lg rounded-full shadow-glow bg-sr-orange hover:bg-orange-600">
-            Book Your Consultation
-          </Button>
+          <Link href="/contact#contact-form">
+            <Button variant="primary" size="lg" className="h-16 px-10 text-lg rounded-full shadow-glow bg-sr-orange hover:bg-orange-600">
+                Book Your Consultation
+            </Button>
+          </Link>
         </div>
 
         <div className="border-t border-white/10 pt-12">
