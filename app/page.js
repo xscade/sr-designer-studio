@@ -213,7 +213,7 @@ export default function Home() {
 
         {/* Section 8: Lead Form */}
         <section className="w-screen h-screen shrink-0 bg-white flex items-center justify-center">
-             <div className="h-full w-full overflow-y-auto md:overflow-hidden flex items-center">
+             <div className="h-full w-full overflow-y-auto flex items-center py-12">
                 <LeadForm />
              </div>
         </section>

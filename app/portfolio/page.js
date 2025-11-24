@@ -145,12 +145,12 @@ export default function Portfolio() {
               <h2 className="text-6xl font-serif font-bold text-sr-black mb-8">
                  Have a vision?
               </h2>
-              <Link href="/contact">
-                 <div className="w-32 h-32 rounded-full bg-sr-orange flex items-center justify-center mx-auto hover:scale-110 transition-transform duration-300 cursor-pointer">
+              <Link href="/contact" className="group flex flex-col items-center">
+                 <div className="w-32 h-32 rounded-full bg-sr-orange flex items-center justify-center mx-auto group-hover:scale-110 transition-transform duration-300 cursor-pointer shadow-xl shadow-orange-500/20">
                     <ArrowRight className="w-12 h-12 text-white" />
                  </div>
+                 <p className="mt-6 font-sans text-gray-500 uppercase tracking-widest group-hover:text-sr-orange transition-colors font-semibold">Let's build it</p>
               </Link>
-              <p className="mt-6 font-sans text-gray-500 uppercase tracking-widest">Let's build it</p>
            </div>
         </section>
 

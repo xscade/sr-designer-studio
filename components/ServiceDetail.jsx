@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Check } from "lucide-react";
+import Link from "next/link";
 
 export default function ServiceDetail({ title, description, features, image, number, align = "left" }) {
   const isLeft = align === "left";
@@ -44,7 +45,7 @@ export default function ServiceDetail({ title, description, features, image, num
                     {description}
                 </p>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10">
                     {features.map((feature, idx) => (
                         <div key={idx} className="flex items-center gap-3">
                             <div className="w-6 h-6 rounded-full bg-sr-orange/10 flex items-center justify-center shrink-0">
@@ -54,6 +55,13 @@ export default function ServiceDetail({ title, description, features, image, num
                         </div>
                     ))}
                 </div>
+
+                <Link 
+                    href="/contact#contact-form" 
+                    className="inline-flex items-center justify-center bg-sr-orange text-white px-8 py-4 rounded-full font-medium hover:bg-orange-600 transition-all duration-300 shadow-lg shadow-sr-orange/30 hover:shadow-xl hover:scale-105"
+                >
+                    Request Consultation
+                </Link>
             </motion.div>
          </div>
 

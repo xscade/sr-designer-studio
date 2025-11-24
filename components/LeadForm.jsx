@@ -39,7 +39,7 @@ export default function LeadForm() {
   };
 
   return (
-    <div className="w-full max-w-[100vw] px-6 md:px-12 flex items-center justify-start h-full relative overflow-hidden">
+    <div className="w-full max-w-[100vw] px-6 md:px-12 flex items-center justify-start h-full relative">
         {/* Aesthetic Lamp Image - Bottom Right */}
         <div className="absolute bottom-0 right-0 w-[40vw] h-[90vh] pointer-events-none z-0 opacity-80 md:opacity-100">
             <img 
@@ -70,7 +70,7 @@ export default function LeadForm() {
               </p>
             </motion.div>
           ) : (
-            <form onSubmit={handleSubmit} className="space-y-8 bg-white md:p-12 rounded-3xl md:shadow-2xl md:border md:border-gray-100 max-h-[70vh] overflow-y-auto custom-scrollbar">
+            <form onSubmit={handleSubmit} className="space-y-8 bg-white md:p-12 rounded-3xl md:shadow-2xl md:border md:border-gray-100">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div className="space-y-2">
                   <Label htmlFor="name" className="text-sm font-medium text-gray-700">Full Name</Label>

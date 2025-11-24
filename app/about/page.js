@@ -165,7 +165,7 @@ export default function AboutPage() {
           </section>
 
           {/* Section 8: Footer */}
-          <section className="w-screen h-screen shrink-0 bg-sr-black flex items-center justify-center">
+          <section id="footer-section" className="w-screen h-screen shrink-0 bg-sr-black flex items-center justify-center">
              <div className="w-full h-full flex items-center overflow-y-auto md:overflow-hidden">
                 <Footer />
              </div>

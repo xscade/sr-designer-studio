@@ -41,13 +41,18 @@ export default function Portfolio() {
   return (
     <section id="portfolio-section" className="h-screen w-fit flex items-center bg-sr-black text-white relative">
       {/* Intro Panel */}
-      <div id="portfolio-panel" className="w-[100vw] md:w-[40vw] shrink-0 h-full flex flex-col justify-center px-12 md:px-24 border-r border-white/10 bg-sr-black z-20 relative">
-        <h2 className="text-5xl md:text-7xl font-serif font-bold mb-6 leading-tight">
+      <div id="portfolio-panel" className="w-[100vw] md:w-[40vw] shrink-0 h-full flex flex-col justify-center px-12 md:px-24 border-r border-white/10 bg-sr-black z-20 relative overflow-hidden">
+        <h2 className="text-5xl md:text-7xl font-serif font-bold mb-6 leading-tight relative z-10">
             Selected <br/> Works
         </h2>
-        <p className="text-white/60 text-xl max-w-md mb-8">
+        <p className="text-white/60 text-xl max-w-md mb-8 relative z-10">
           A curated collection of our finest architectural and interior design projects.
         </p>
+        
+        {/* SR Brand Watermark */}
+        <div className="absolute -bottom-10 -right-10 text-[15rem] font-serif text-white opacity-5 pointer-events-none select-none leading-none z-0">
+            SR
+        </div>
       </div>
 
       {/* Projects */}

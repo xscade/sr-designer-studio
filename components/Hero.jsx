@@ -76,7 +76,7 @@ export default function Hero() {
           {/* Optional sub-line or CTA next to the big title if needed */}
           <div className="md:absolute md:bottom-12 md:right-12 mt-8 md:mt-0 pointer-events-auto">
              <Button variant="white" className="rounded-none px-8 py-6 text-lg tracking-wide hover:bg-white hover:text-sr-black transition-colors">
-                Explore Projects <ArrowRight className="ml-2 w-5 h-5" />
+                Explore AI <ArrowRight className="ml-2 w-5 h-5" />
              </Button>
           </div>
         </motion.div>

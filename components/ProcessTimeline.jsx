@@ -120,19 +120,24 @@ export default function ProcessTimeline() {
   return (
     <section className="h-screen w-fit flex bg-white">
       {/* Intro Panel */}
-      <div className="w-[100vw] md:w-[60vw] h-full flex-shrink-0 flex flex-col justify-center px-12 md:px-24 bg-sr-black text-white relative z-10">
-         <span className="text-sr-orange font-medium tracking-widest uppercase text-sm mb-4 block">
+      <div className="w-[100vw] md:w-[60vw] h-full flex-shrink-0 flex flex-col justify-center px-12 md:px-24 bg-sr-black text-white relative z-10 overflow-hidden">
+         <span className="text-sr-orange font-medium tracking-widest uppercase text-sm mb-4 block relative z-10">
             Our Process
           </span>
-          <h2 className="text-5xl md:text-7xl font-bold mb-6 font-serif leading-tight">
+          <h2 className="text-5xl md:text-7xl font-bold mb-6 font-serif leading-tight relative z-10">
             From Concept to<br/>  Completion
           </h2>
-          <p className="text-white/60 max-w-md text-lg mb-12">
+          <p className="text-white/60 max-w-md text-lg mb-12 relative z-10">
              A seamless six-step journey to your dream space.
           </p>
-          <div className="flex items-center gap-2 text-white">
+          <div className="flex items-center gap-2 text-white relative z-10">
             <span>Scroll right</span>
             <ArrowRight className="w-5 h-5 animate-pulse" />
+          </div>
+          
+          {/* SR Brand Watermark */}
+          <div className="absolute -bottom-20 -right-10 text-[20rem] font-serif text-white opacity-5 pointer-events-none select-none leading-none z-0">
+              SR
           </div>
       </div>
 
