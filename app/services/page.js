@@ -181,7 +181,7 @@ export default function ServicesPage() {
                     className="text-6xl md:text-8xl lg:text-9xl font-serif font-bold text-white mb-8 leading-none"
                 >
                     Our <br />
-                    <span className="text-sr-orange italic">Services</span>
+                    <span className="text-sr-orange">Services</span>
                 </motion.h1>
                 <motion.p 
                     initial={{ opacity: 0, x: -50 }}
@@ -210,7 +210,7 @@ export default function ServicesPage() {
           })}
 
           {/* Footer */}
-          <section className="w-screen h-screen shrink-0 bg-sr-black flex items-center justify-center">
+          <section id="footer-section" className="w-screen h-screen shrink-0 bg-sr-black flex items-center justify-center">
              <div className="w-full h-full flex items-center overflow-y-auto md:overflow-hidden">
                 <Footer />
              </div>
