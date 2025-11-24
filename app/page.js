@@ -124,10 +124,44 @@ export default function Home() {
     return () => ctx.revert(); // Cleanup all GSAP animations/triggers
   }, []);
 
+  // Handle hash navigation on mount
+  useEffect(() => {
+    // Small delay to ensure layout is ready
+    const timer = setTimeout(() => {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetId = hash.substring(1);
+            const wrapper = document.querySelector("#horizontal-wrapper");
+            const section = document.getElementById(targetId);
+
+            if (wrapper && section) {
+                const scrollWidth = wrapper.scrollWidth;
+                const windowWidth = window.innerWidth;
+                const offsetLeft = section.offsetLeft;
+                
+                // Calculate the scroll position based on the GSAP mapping
+                // Formula: P = L / (W - V) -> Scroll = P * W
+                const maxScroll = scrollWidth - windowWidth;
+                if (maxScroll > 0) {
+                    const progress = offsetLeft / maxScroll;
+                    const scrollPos = progress * scrollWidth;
+                    
+                    window.scrollTo({
+                        top: scrollPos,
+                        behavior: "smooth"
+                    });
+                }
+            }
+        }
+    }, 500);
+    
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <main className="overscroll-none bg-white selection:bg-sr-orange selection:text-white overflow-hidden">
       <div ref={containerRef} className="w-full h-full">
-        <div ref={wrapperRef} className="flex h-screen w-fit">
+        <div ref={wrapperRef} id="horizontal-wrapper" className="flex h-screen w-fit">
         
         {/* Section 1: Hero */}
         <section className="w-screen h-screen shrink-0 relative">

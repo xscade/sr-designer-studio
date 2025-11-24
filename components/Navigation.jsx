@@ -72,6 +72,42 @@ export default function Navigation() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [isCollapsedByScroll]);
 
+  const handleNavClick = (e, href) => {
+    // Check if it's a hash link for the homepage
+    if (href.startsWith("/#")) {
+      const targetId = href.replace("/#", "");
+      
+      // If we are already on the homepage, scroll manually
+      if (pathname === "/") {
+        e.preventDefault();
+        
+        const wrapper = document.querySelector("#horizontal-wrapper");
+        const section = document.getElementById(targetId);
+
+        if (wrapper && section) {
+            const scrollWidth = wrapper.scrollWidth;
+            const windowWidth = window.innerWidth;
+            const offsetLeft = section.offsetLeft;
+            
+            const maxScroll = scrollWidth - windowWidth;
+            if (maxScroll > 0) {
+                const progress = offsetLeft / maxScroll;
+                const scrollPos = progress * scrollWidth;
+                
+                window.scrollTo({
+                    top: scrollPos,
+                    behavior: "smooth"
+                });
+                
+                // Update URL without jumping
+                history.pushState(null, null, href);
+            }
+        }
+      }
+      // If not on homepage, let Link handle navigation to "/" with hash
+    }
+  };
+
   return (
     <>
       {/* Collapsible Glassmorphic Menu Bar - Top Right */}
@@ -115,6 +151,7 @@ export default function Navigation() {
                                     <li key={item.name}>
                                         <Link
                                             href={item.href}
+                                            onClick={(e) => handleNavClick(e, item.href)}
                                             className={`relative px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 block mx-1 ${
                                                 isActive 
                                                 ? "text-sr-black bg-white shadow-sm" 
