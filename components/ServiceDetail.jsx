@@ -4,11 +4,11 @@ import { motion } from "framer-motion";
 import { Check } from "lucide-react";
 import Link from "next/link";
 
-export default function ServiceDetail({ title, description, features, image, number, align = "left" }) {
+export default function ServiceDetail({ id, title, description, features, image, number, align = "left" }) {
   const isLeft = align === "left";
 
   return (
-    <section className="w-screen h-screen shrink-0 bg-white overflow-hidden relative flex items-center">
+    <section id={id} className="w-screen h-screen shrink-0 bg-white overflow-hidden relative flex items-center">
        <div className="container mx-auto px-6 md:px-12 h-full flex flex-col md:flex-row items-center justify-center gap-12 md:gap-24">
          
          {/* Image Side */}

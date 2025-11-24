@@ -38,20 +38,19 @@ export default function Footer() {
             <div>
               <h4 className="font-bold mb-6 text-lg font-serif">Services</h4>
               <ul className="space-y-4 text-gray-400 text-lg">
-                <li><a href="#" className="hover:text-sr-orange transition-colors">Architectural Design</a></li>
-                <li><a href="#" className="hover:text-sr-orange transition-colors">Interior Styling</a></li>
-                <li><a href="#" className="hover:text-sr-orange transition-colors">Sustainable Living</a></li>
-                <li><a href="#" className="hover:text-sr-orange transition-colors">Commercial Spaces</a></li>
+                <li><a href="/services#architectural-design" className="hover:text-sr-orange transition-colors">Architectural Design</a></li>
+                <li><a href="/services#interior-design" className="hover:text-sr-orange transition-colors">Interior Design</a></li>
+                <li><a href="/services#sustainable-design" className="hover:text-sr-orange transition-colors">Sustainable Design</a></li>
+                <li><a href="/services#landscape-architecture" className="hover:text-sr-orange transition-colors">Landscape Architecture</a></li>
               </ul>
             </div>
 
             <div>
               <h4 className="font-bold mb-6 text-lg font-serif">Company</h4>
               <ul className="space-y-4 text-gray-400 text-lg">
-                <li><a href="#" className="hover:text-sr-orange transition-colors">About Us</a></li>
-                <li><a href="#" className="hover:text-sr-orange transition-colors">Portfolio</a></li>
-                <li><a href="#" className="hover:text-sr-orange transition-colors">Careers</a></li>
-                <li><a href="#" className="hover:text-sr-orange transition-colors">Contact</a></li>
+                <li><a href="/about" className="hover:text-sr-orange transition-colors">About Us</a></li>
+                <li><a href="/portfolio" className="hover:text-sr-orange transition-colors">Portfolio</a></li>
+                <li><a href="/contact" className="hover:text-sr-orange transition-colors">Contact</a></li>
               </ul>
             </div>
           </div>

@@ -94,6 +94,37 @@ export default function ServicesPage() {
     return () => ctx.revert();
   }, []);
 
+  // Handle hash navigation
+  useEffect(() => {
+    const timer = setTimeout(() => {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetId = hash.substring(1);
+            const wrapper = wrapperRef.current;
+            const section = document.getElementById(targetId);
+
+            if (wrapper && section) {
+                const scrollWidth = wrapper.scrollWidth;
+                const windowWidth = window.innerWidth;
+                const offsetLeft = section.offsetLeft;
+                
+                const maxScroll = scrollWidth - windowWidth;
+                if (maxScroll > 0) {
+                    const progress = offsetLeft / maxScroll;
+                    const scrollPos = progress * scrollWidth;
+                    
+                    window.scrollTo({
+                        top: scrollPos,
+                        behavior: "smooth"
+                    });
+                }
+            }
+        }
+    }, 1000);
+    
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <main className="overscroll-none bg-white selection:bg-sr-orange selection:text-white overflow-hidden">
       <div ref={containerRef} className="w-full h-full">
@@ -132,13 +163,19 @@ export default function ServicesPage() {
           </section>
 
           {/* Service Sections */}
-          {servicesList.map((service, index) => (
-            <ServiceDetail 
-                key={index} 
-                {...service} 
-                number={`0${index + 1}`}
-            />
-          ))}
+          {servicesList.map((service, index) => {
+            // Create a URL-friendly ID from the title
+            const id = service.title.toLowerCase().replace(/\s+/g, '-');
+            
+            return (
+                <ServiceDetail 
+                    key={index} 
+                    id={id}
+                    {...service} 
+                    number={`0${index + 1}`}
+                />
+            );
+          })}
 
           {/* Footer */}
           <section className="w-screen h-screen shrink-0 bg-sr-black flex items-center justify-center">
