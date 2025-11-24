@@ -125,6 +125,38 @@ export default function ServicesPage() {
     return () => clearTimeout(timer);
   }, []);
 
+  // Listen for hash changes when already on the page
+  useEffect(() => {
+    const handleHashChange = () => {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetId = hash.substring(1);
+            const wrapper = wrapperRef.current;
+            const section = document.getElementById(targetId);
+
+            if (wrapper && section) {
+                const scrollWidth = wrapper.scrollWidth;
+                const windowWidth = window.innerWidth;
+                const offsetLeft = section.offsetLeft;
+                
+                const maxScroll = scrollWidth - windowWidth;
+                if (maxScroll > 0) {
+                    const progress = offsetLeft / maxScroll;
+                    const scrollPos = progress * scrollWidth;
+                    
+                    window.scrollTo({
+                        top: scrollPos,
+                        behavior: "smooth"
+                    });
+                }
+            }
+        }
+    };
+
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
+  }, []);
+
   return (
     <main className="overscroll-none bg-white selection:bg-sr-orange selection:text-white overflow-hidden">
       <div ref={containerRef} className="w-full h-full">
