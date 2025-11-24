@@ -9,14 +9,47 @@ import { UploadCloud, CheckCircle } from "lucide-react";
 export default function LeadForm() {
   const [submitted, setSubmitted] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setSubmitted(true);
+
+    const lead = {
+      name: e.target.name.value,
+      phone: e.target.phone.value,
+      email: e.target.email.value,
+      type: e.target.type.value,
+      budget: e.target.budget.value,
+      location: e.target.location.value,
+    };
+
+    try {
+        const response = await fetch("/api/leads", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(lead),
+        });
+
+        if (response.ok) {
+            setSubmitted(true);
+        } else {
+            console.error("Failed to submit lead");
+        }
+    } catch (error) {
+        console.error("Error submitting form", error);
+    }
   };
 
   return (
-    <div className="w-full max-w-[100vw] px-6 md:px-12 flex items-center justify-start h-full">
-        <div className="max-w-3xl w-full md:ml-12 lg:ml-24">
+    <div className="w-full max-w-[100vw] px-6 md:px-12 flex items-center justify-start h-full relative overflow-hidden">
+        {/* Aesthetic Lamp Image - Bottom Right */}
+        <div className="absolute bottom-0 right-0 w-[40vw] h-[90vh] pointer-events-none z-0 opacity-80 md:opacity-100">
+            <img 
+                src="https://storage.googleapis.com/client-web-files/sr%20designer%20studio/Lamp.png" 
+                alt="Aesthetic Lamp" 
+                className="w-full h-full object-contain object-bottom mix-blend-multiply"
+            />
+        </div>
+
+        <div className="max-w-3xl w-full md:ml-0 lg:ml-12 relative z-10">
           <div className="text-left mb-8">
             <h2 className="text-4xl md:text-6xl font-bold text-sr-black mb-4 font-serif">Start Your Journey</h2>
             <p className="text-gray-500 text-lg">
@@ -107,17 +140,6 @@ export default function LeadForm() {
                   className="w-full p-4 rounded-xl bg-gray-50 border border-transparent focus:bg-white focus:border-sr-orange focus:ring-2 focus:ring-sr-orange/20 outline-none transition-all"
                   placeholder="e.g., Visakhapatnam, AP"
                 />
-              </div>
-
-              <div className="space-y-2">
-                <Label className="text-sm font-medium text-gray-700">Upload Reference / Floor Plan</Label>
-                <div className="border-2 border-dashed border-gray-200 rounded-xl p-8 text-center hover:border-sr-orange/50 transition-colors cursor-pointer group">
-                  <UploadCloud className="w-10 h-10 text-gray-400 mx-auto mb-2 group-hover:text-sr-orange transition-colors" />
-                  <p className="text-sm text-gray-500">
-                    <span className="text-sr-orange font-medium">Click to upload</span> or drag and drop
-                  </p>
-                  <p className="text-xs text-gray-400 mt-1">SVG, PNG, JPG or PDF (max. 10MB)</p>
-                </div>
               </div>
 
               <Button type="submit" size="lg" className="w-full text-lg h-16 bg-sr-orange hover:bg-orange-600 text-white">

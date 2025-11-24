@@ -10,8 +10,8 @@ const navItems = [
   { name: "Home", href: "/" },
   { name: "About", href: "/about" },
   { name: "Portfolio", href: "/portfolio" },
-  { name: "Services", href: "/#services" },
-  { name: "Process", href: "/#process" },
+  { name: "Services", href: "/services" },
+  { name: "Process", href: "/#process-section" },
   { name: "Contact", href: "/contact" },
 ];
 
@@ -35,19 +35,32 @@ export default function Navigation() {
       // We need to find the scroll trigger point for the AI Generator section.
       // A safer way is to check if the element is in view.
       const aiSection = document.querySelector('#ai-generator-section');
+      const footerSection = document.querySelector('#footer-section');
       
+      let shouldCollapse = false;
+
       if (aiSection) {
         const rect = aiSection.getBoundingClientRect();
         // Check if the section is significantly in the viewport (e.g., taking up >50%)
-        const isVisible = rect.left < window.innerWidth * 0.5 && rect.right > window.innerWidth * 0.5;
-        
-        if (isVisible && !isCollapsedByScroll) {
-            setIsExpanded(false);
-            setIsCollapsedByScroll(true);
-        } else if (!isVisible && isCollapsedByScroll) {
-            setIsExpanded(true);
-            setIsCollapsedByScroll(false);
+        if (rect.left < window.innerWidth * 0.5 && rect.right > window.innerWidth * 0.5) {
+            shouldCollapse = true;
         }
+      }
+
+      if (footerSection) {
+        const rect = footerSection.getBoundingClientRect();
+        // Check if the section is significantly in the viewport
+        if (rect.left < window.innerWidth * 0.5 && rect.right > window.innerWidth * 0.5) {
+            shouldCollapse = true;
+        }
+      }
+      
+      if (shouldCollapse && !isCollapsedByScroll) {
+          setIsExpanded(false);
+          setIsCollapsedByScroll(true);
+      } else if (!shouldCollapse && isCollapsedByScroll) {
+          setIsExpanded(true);
+          setIsCollapsedByScroll(false);
       }
     };
 

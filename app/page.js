@@ -185,7 +185,7 @@ export default function Home() {
         </section>
 
         {/* Section 9: Footer */}
-        <section className="w-screen h-screen shrink-0 bg-sr-black flex items-center justify-center">
+        <section id="footer-section" className="w-screen h-screen shrink-0 bg-sr-black flex items-center justify-center">
              <div className="h-full w-full overflow-y-auto md:overflow-hidden flex items-center">
                 <Footer />
              </div>
